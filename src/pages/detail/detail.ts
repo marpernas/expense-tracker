@@ -17,21 +17,24 @@ export class DetailPage {
               private navCtrl: NavController, 
               private navParams: NavParams,
               private expenseService: ExpenseService) {
-    this.categories = expenseService.categories;            
-    const expenseId = navParams.get('expenseId');
-    if(expenseId){
-      this.expense = expenseService.getExpense(expenseId);
-    }else {
-      this.expense = {
+    this.categories = expenseService.categories; 
+
+    this.expense = {
         date: '',
         amount: 0,
         category: '',
         description: ''
-      };
-    }
+    };
+
+    const expenseId = navParams.get('expenseId');
+    if(expenseId){
+      expenseService.getExpense(expenseId)
+      .then(expense => this.expense = expense );
+      }
   }
 
   onSave(){
+
     if(this.expense.id){
       this.expenseService.updateExpense(this.expense);
     } else {
